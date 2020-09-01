@@ -130,4 +130,69 @@ df.loc[:, 'D'] = np.array([5] * len(df))
 df2 = df.copy()
 df2[df2 > 0] = -df2
 
+# Creates a dataframe copy with including a new column 'E'
+df1 = df.reindex(index=dates[0:4], columns=list(df.columns) + ['E'])
+# Sets the first two rows to 1 in 'E' column
+df1.loc[dates[0]:dates[1], 'E'] = 1
+print(df1)
 
+# Drop rows with missing data
+df1.dropna(how='any')
+
+# Fill in missing data
+df1.fillna(value=5)
+
+# boolean mask where values are nan
+pd.isna(df1)
+
+## Stats
+## Operations in general exclude missing data
+
+# descriptive statistic
+df.mean()
+
+# same operation on other axis
+df.mean(1)
+
+# Shifts a series
+s = pd.Series([1, 3, 5, np.nan, 6, 8], index=dates).shift(2)
+print(s)
+
+# Subtracts a series from a dataframe
+df.sub(s, axis='index')
+
+# Applying a function to a DataFrame
+df.apply(np.cumsum)
+df.apply(lambda x: x.max() - x.min())
+
+# Creating a histogram
+s = pd.Series(np.random.randint(0, 7, size=10))
+print(s)
+s.value_counts()
+
+# Series have some string processing methods in str attribute
+s = pd.Series(['A', 'B', 'C', 'Aaba', 'Baca', np.nan, 'CABA', 'dog', 'cat'])
+print(s.str.lower())
+
+# Concatenating
+df = pd.DataFrame(np.random.randn(10, 4))
+print(df)
+# break into pieces
+pieces = [df[:3], df[3:7], df[7:]]
+print(pd.concat(pieces))
+
+# NOTE
+# ----
+# Adding a column to a DF is fast, but adding a row requires a copy.
+# It can be expensive to add a row.
+# Recommendation is to pass in a pre-built list of records into the DF const
+#  instead of building DF iteratively.
+
+# Joining DataFrames
+left = pd.DataFrame({'key': ['foo', 'foo'], 'lval': [1, 2]})
+right = pd.DataFrame({'key': ['foo', 'foo'], 'rval': [4, 5]})
+pd.merge(left, right, on='key')
+
+left = pd.DataFrame({'key': ['foo', 'bar'], 'lval': [1, 2]})
+right = pd.DataFrame({'key': ['foo', 'bar'], 'rval': [4, 5]})
+pd.merge(left, right, on='key')
