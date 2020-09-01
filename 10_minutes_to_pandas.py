@@ -99,3 +99,35 @@ print(df.iloc[1, 1])
 
 # Fast access scalar
 print(df.iat[1, 1])
+
+# Using a column's value to select data
+print(df[df['A'] > 0])
+
+# Selecting values in a DF where condition is met
+# Values that don't meet condition come back as NaN
+print(df[df > 0])
+
+# Filtering with isin()
+df2 = df.copy()
+df2['E'] = ['one', 'one', 'two', 'three', 'four', 'three']
+print(df2[df2['E'].isin(['two', 'four'])])
+
+# Setting a new column
+s1 = pd.Series([1, 2, 3, 4, 5, 6],
+               index=pd.date_range('20130102', periods=6))
+df['F'] = s1
+
+# Setting values by label
+df.at[dates[0], 'A'] = 0
+
+# Setting values by position
+df.iat[0, 1] = 0
+
+# Assigning column with an array
+df.loc[:, 'D'] = np.array([5] * len(df))
+
+# Setting to negative value using WHERE operation
+df2 = df.copy()
+df2[df2 > 0] = -df2
+
+
